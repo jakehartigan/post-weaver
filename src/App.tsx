@@ -2,12 +2,24 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from "./contexts/AuthContext";
+import "@mantine/core/styles.css";
+import { createTheme, MantineProvider } from "@mantine/core";
+// other css files are required only if
+// you are using components from the corresponding package
+import "@mantine/dates/styles.css";
+import "@mantine/charts/styles.css";
+import "@mantine/notifications/styles.css";
+
 import PrivateRoute from "./components/PrivateRoute";
 import Signup from "../src/pages/Signup";
 import Login from "../src/pages/Login";
 import Dashboard from "../src/pages/Dashboard";
 import PageNotFound from "./pages/PageNotFound";
 import "./firebaseConfig";
+
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
 
 const App: React.FC = () => {
   const { currentUser } = useAuth();
@@ -17,23 +29,25 @@ const App: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <MantineProvider theme={theme}>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </MantineProvider>
   );
 };
 

@@ -3,16 +3,40 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { app } from "../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
-import AuthStatus from "../components/AuthStatus";
+import {
+  TextInput,
+  Button,
+  Box,
+  Group,
+  Paper,
+  Title,
+  Container,
+  Text,
+  Flex,
+  Center,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { useAuth } from "../contexts/AuthContext";
 
 const Signup: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { currentUser } = useAuth();
   const navigate = useNavigate();
+
+  const form = useForm({
+    initialValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
+
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      username: (value) => (value ? null : "Username is required"),
+      password: (value) =>
+        value.length >= 6 ? null : "Password must be at least 6 characters",
+    },
+  });
 
   //MoveUser to Dashboard if their status is logged in
   useEffect(() => {
@@ -21,29 +45,23 @@ const Signup: React.FC = () => {
     }
   }, [currentUser, navigate]);
 
-  const handleSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    event.preventDefault();
-
-    // Initialize the Firebase auth instance
+  const handleSubmit = async (values: typeof form.values) => {
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      await createUserWithEmailAndPassword(auth, values.email, values.password)
         .then((userCredential) => {
-          // User is signed up, now add additional info to Firestore
           const user = userCredential.user;
           setDoc(doc(db, "users", user.uid), {
-            email: user.email,
-            username: username,
-            role: "coach", // or "client", depending on the signup context
+            email: values.email,
+            username: values.username,
+            role: "coach",
           });
+          navigate("/dashboard");
         })
         .catch((error) => {
-          const errorMessage = error.message;
-          setError(errorMessage);
+          setError(error.message);
         });
     } catch (error: any) {
       setError("An unexpected error occurred.");
@@ -51,43 +69,53 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Coach Sign Up</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      <p>
-        Already have an account? <Link to="/login">Log in</Link>
-      </p>
-    </div>
+    <Flex pt={100} justify="center" align="center">
+      <Box maw={340} mx="auto">
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <Title order={2}>Sign Up</Title>
+          {error && (
+            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+          )}
+
+          <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput
+              withAsterisk
+              label="Email"
+              placeholder="your@email.com"
+              {...form.getInputProps("email")}
+            />
+            <TextInput
+              withAsterisk
+              label="Username"
+              placeholder="How clients find you."
+              {...form.getInputProps("username")}
+            />
+            <TextInput
+              withAsterisk
+              label="Password"
+              placeholder="Your password"
+              type="password"
+              {...form.getInputProps("password")}
+            />
+            <Group mt="md">
+              <Button type="submit">Sign Up</Button>
+            </Group>
+          </form>
+          <Flex p={10} justify="flex-start" align="baseline" direction="row">
+            <p>Already have an account?</p>
+            <Link
+              to="/login"
+              style={{
+                textDecoration: "none",
+                padding: 10,
+              }}
+            >
+              Login
+            </Link>
+          </Flex>
+        </Paper>
+      </Box>
+    </Flex>
   );
 };
 

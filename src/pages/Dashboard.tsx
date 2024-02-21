@@ -1,5 +1,6 @@
 import React from "react";
 import { getAuth, signOut } from "firebase/auth";
+import { Button } from "@mantine/core";
 
 const Dashboard: React.FC = () => {
   // Initialize the Firebase auth instance
@@ -20,7 +21,7 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <div>Dashboard Page</div>
-      <button onClick={handleLogout}>Logout</button> {/* Logout button */}
+      <Button onClick={handleLogout}>Logout</Button> {/* Logout button */}
     </div>
   );
 };
