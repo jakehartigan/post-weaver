@@ -1,7 +1,28 @@
 import React from "react";
+import { getAuth, signOut } from "firebase/auth";
 
 const Dashboard: React.FC = () => {
-  return <div>Dashboard Page</div>;
+  // Initialize the Firebase auth instance
+  const auth = getAuth();
+
+  // Function to handle the logout process
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out successfully");
+      // You can redirect the user to the login page or perform other actions after logout
+    } catch (error) {
+      console.error("Error signing out: ", error);
+      // Handle errors here, such as displaying a notification to the user
+    }
+  };
+
+  return (
+    <div>
+      <div>Dashboard Page</div>
+      <button onClick={handleLogout}>Logout</button> {/* Logout button */}
+    </div>
+  );
 };
 
 export default Dashboard;
