@@ -4,7 +4,8 @@ import { Button, ScrollArea, Skeleton, Text, Title } from "@mantine/core";
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Main from "../layouts/Main";
-import NavHeader from "../layouts/NavHeader";
+
+import { NavbarSimple } from "../layouts/navbarMinimal/NavbarSimple";
 
 const Dashboard: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -35,25 +36,11 @@ const Dashboard: React.FC = () => {
     >
       <AppShell.Header>
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <Title visibleFrom="sm" p={10}>
-          Apace Step Dashboard
-        </Title>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        <AppShell.Section>
-          <NavHeader />
-        </AppShell.Section>
         <AppShell.Section grow my="md" component={ScrollArea}>
-          <Button fullWidth onClick={alert}>
-            Invite
-          </Button>
-          60 links in a scrollable section
-          {Array(60)
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton key={index} h={28} mt="sm" animate={false} />
-            ))}
+          <NavbarSimple />
         </AppShell.Section>
         <AppShell.Section>
           <Button color="gray" variant="subtle" onClick={handleLogout}>

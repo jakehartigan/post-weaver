@@ -10,7 +10,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/notifications/styles.css";
 
-import PrivateRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/authNavigation/PrivateRoute";
 import Signup from "../src/pages/Signup";
 import Login from "../src/pages/Login";
 import Dashboard from "../src/pages/Dashboard";

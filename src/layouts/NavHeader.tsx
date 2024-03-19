@@ -4,7 +4,7 @@ import React from "react";
 function NavHeader() {
   return (
     <Box>
-      <Title order={2}>Clients</Title>
+      <Title order={2}>Post Weaver</Title>
     </Box>
   );
 }

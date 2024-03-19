@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
-import { app } from "../firebaseConfig";
+import { app } from "../../firebaseConfig";
 
 const AuthStatus: React.FC = () => {
   const [user, setUser] = useState<User | null>(null); // State to store the current user object, typed as User or null
