@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 24px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: whitesmoke;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzone {
+  border-width: rem(1px);
+  padding-bottom: rem(50px);
+}
+
+.icon {
+  color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+}
+
+.control {
+  margin-top: 16;
+  padding-right: 10;
+  padding-left: 10;
+}
