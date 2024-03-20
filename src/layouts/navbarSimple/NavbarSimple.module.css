@@ -48,6 +48,11 @@
     }
   }
 
+  .link:hover {
+    background-color: var(--hover-background-color); /* Adjust as needed */
+    color: var(--hover-text-color); /* Adjust as needed */
+  }
+
   &[data-active] {
     &,
     &:hover {

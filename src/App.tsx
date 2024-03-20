@@ -16,6 +16,11 @@ import Login from "../src/pages/Login";
 import Dashboard from "../src/pages/Dashboard";
 import PageNotFound from "./pages/PageNotFound";
 import "./firebaseConfig";
+import Home from "./pages/Home";
+import Billing from "./pages/Billing";
+import Support from "./pages/Support";
+import Tokens from "./pages/Tokens";
+import Settings from "./pages/Settings";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -36,7 +41,7 @@ const App: React.FC = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route
-              path="/dashboard"
+              path="/dashboard/*"
               element={
                 <PrivateRoute>
                   <Dashboard />

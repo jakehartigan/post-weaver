@@ -47,9 +47,8 @@ export function DropzoneButton() {
             <Dropzone.Reject>tweet.js file only</Dropzone.Reject>
             <Dropzone.Idle>Upload Twitter Archive</Dropzone.Idle>
           </Text>
-          <Text ta="center" fz="sm" mt="xs" c="dimmed">
-            Drag&apos;n&apos;drop your tweet.js file here to upload. We can ONLY
-            accept the tweet.js file. NOT the entire folder.
+          <Text ta="center" fz="sm" mt="xs" c="dimmed" mb="lg">
+            Drag&apos;n&apos;drop your tweet.js file here to upload.
           </Text>
         </div>
       </Dropzone>

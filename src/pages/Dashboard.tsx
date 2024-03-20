@@ -1,9 +1,14 @@
 import React from "react";
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import Main from "../layouts/Main";
-
-import { NavbarSimple } from "../layouts/navbarMinimal/NavbarSimple";
+import { NavbarSimple } from "../layouts/navbarSimple/NavbarSimple";
+import { Outlet, Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import Support from "./Support";
+import Billing from "./Billing";
+import Tokens from "./Tokens";
+import Settings from "./Settings";
+import Referrals from "./Referrals";
 
 const Dashboard: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -27,7 +32,15 @@ const Dashboard: React.FC = () => {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Main />
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="get-tokens" element={<Tokens />} />
+          <Route path="referrals" element={<Referrals />} />
+
+          <Route path="support" element={<Support />} />
+          <Route path="billing" element={<Billing />} />
+          <Route path="settings" element={<Settings />} />
+        </Routes>
       </AppShell.Main>
     </AppShell>
   );
