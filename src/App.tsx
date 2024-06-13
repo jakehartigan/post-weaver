@@ -7,7 +7,6 @@ import { createTheme, MantineProvider } from "@mantine/core";
 // other css files are required only if
 // you are using components from the corresponding package
 import "@mantine/dates/styles.css";
-import "@mantine/charts/styles.css";
 import "@mantine/notifications/styles.css";
 
 import PrivateRoute from "./components/authNavigation/PrivateRoute";
@@ -18,7 +17,7 @@ import PageNotFound from "./pages/PageNotFound";
 import "./firebaseConfig";
 import Home from "./pages/Home";
 import Billing from "./pages/Billing";
-import Support from "./pages/Support";
+import Support from "./pages/Posts";
 import Tokens from "./pages/Tokens";
 import Settings from "./pages/Settings";
 

@@ -3,7 +3,7 @@ import { Group, Code } from "@mantine/core";
 import { getAuth, signOut } from "firebase/auth";
 import { Link, useLocation } from "react-router-dom";
 import {
-  IconLifebuoy,
+  IconTable,
   IconHome,
   IconCoins,
   IconSettings,
@@ -16,9 +16,9 @@ import classes from "./NavbarSimple.module.css";
 
 const data = [
   { link: "/", label: "Home", icon: IconHome },
+  { link: "/posts", label: "Posts", icon: IconTable },
   { link: "/get-tokens", label: "Buy Tokens", icon: IconCoins },
   { link: "/referrals", label: "Refer a Friend", icon: IconGift },
-  { link: "/support", label: "Support", icon: IconLifebuoy },
   { link: "/billing", label: "Billing", icon: IconCreditCard },
   { link: "/settings", label: "Settings", icon: IconSettings },
 ];

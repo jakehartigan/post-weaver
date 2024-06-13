@@ -1,65 +1,73 @@
 import { useRef } from "react";
 import { Text, Group, Button, rem, useMantineTheme } from "@mantine/core";
-import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
-import { IconCloudUpload, IconX, IconDownload } from "@tabler/icons-react";
+import { IconCloudUpload } from "@tabler/icons-react";
 import classes from "./DropzoneButton.module.css";
+import importAndProcessPosts from "../../../modules/postimporting/importAndProcessPosts";
+
+//firebase
+import { useAuth } from "../../../contexts/AuthContext";
 
 export function DropzoneButton() {
-  const theme = useMantineTheme();
-  const openRef = useRef<() => void>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const theme = useMantineTheme();
+
+  const { currentUser } = useAuth();
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0 && currentUser) {
+      const file = files[0];
+      console.log("Selected file:", file);
+
+      // Read the file content
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const text = e.target?.result;
+        if (typeof text === "string") {
+          const jsonData = JSON.parse(
+            text.replace("window.YTD.tweets.part0 = ", "")
+          );
+          await importAndProcessPosts(currentUser.uid, jsonData);
+        }
+      };
+      reader.readAsText(file);
+    } else {
+      console.log("No file selected or user not authenticated");
+    }
+  };
+
+  const handleButtonClick = () => {
+    console.log("Button clicked");
+    fileInputRef.current?.click();
+  };
   return (
     <div className={classes.wrapper}>
-      <Dropzone
-        openRef={openRef}
-        onDrop={() => {}}
-        className={classes.dropzone}
-        radius="md"
-        accept={[MIME_TYPES.pdf]}
-        maxSize={30 * 1024 ** 2}
-      >
-        <div style={{ pointerEvents: "none" }}>
-          <Group justify="center">
-            <Dropzone.Accept>
-              <IconDownload
-                style={{ width: rem(50), height: rem(50) }}
-                color={theme.colors.blue[6]}
-                stroke={1.5}
-              />
-            </Dropzone.Accept>
-            <Dropzone.Reject>
-              <IconX
-                style={{ width: rem(50), height: rem(50) }}
-                color={theme.colors.red[6]}
-                stroke={1.5}
-              />
-            </Dropzone.Reject>
-            <Dropzone.Idle>
-              <IconCloudUpload
-                style={{ width: rem(50), height: rem(50) }}
-                stroke={1.5}
-              />
-            </Dropzone.Idle>
-          </Group>
-
-          <Text ta="center" fw={700} fz="lg" mt="xl">
-            <Dropzone.Accept>Drop files here</Dropzone.Accept>
-            <Dropzone.Reject>tweet.js file only</Dropzone.Reject>
-            <Dropzone.Idle>Upload Twitter Archive</Dropzone.Idle>
-          </Text>
-          <Text ta="center" fz="sm" mt="xs" c="dimmed" mb="lg">
-            Drag&apos;n&apos;drop your tweet.js file here to upload.
-          </Text>
-        </div>
-      </Dropzone>
-
+      <input
+        type="file"
+        accept=".js,.json"
+        style={{ display: "none" }}
+        ref={fileInputRef}
+        onChange={handleFileChange}
+      />
+      <Group justify="center" style={{ pointerEvents: "none" }}>
+        <IconCloudUpload
+          style={{ width: rem(50), height: rem(50) }}
+          stroke={1.5}
+        />
+      </Group>
+      <Text ta="center" fw={700} fz="lg" mt="xl">
+        Upload Twitter Archive
+      </Text>
+      <Text ta="center" fz="sm" mt="xs" c="dimmed" mb="lg">
+        Click the button below to select your tweet.js or JSON file.
+      </Text>
       <Button
         className={classes.control}
         size="md"
         radius="md"
-        onClick={() => openRef.current?.()}
+        onClick={handleButtonClick}
       >
-        Select files
+        Select file
       </Button>
     </div>
   );

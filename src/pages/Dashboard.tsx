@@ -4,11 +4,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { NavbarSimple } from "../layouts/navbarSimple/NavbarSimple";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Home from "./Home";
-import Support from "./Support";
 import Billing from "./Billing";
 import Tokens from "./Tokens";
 import Settings from "./Settings";
 import Referrals from "./Referrals";
+import Posts from "./Posts";
 
 const Dashboard: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -36,8 +36,7 @@ const Dashboard: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="get-tokens" element={<Tokens />} />
           <Route path="referrals" element={<Referrals />} />
-
-          <Route path="support" element={<Support />} />
+          <Route path="posts" element={<Posts />} />
           <Route path="billing" element={<Billing />} />
           <Route path="settings" element={<Settings />} />
         </Routes>

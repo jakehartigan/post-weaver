@@ -10,10 +10,7 @@ import {
   Group,
   Paper,
   Title,
-  Container,
-  Text,
   Flex,
-  Center,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../contexts/AuthContext";
@@ -26,19 +23,16 @@ const Signup: React.FC = () => {
   const form = useForm({
     initialValues: {
       email: "",
-      username: "",
       password: "",
     },
 
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      username: (value) => (value ? null : "Username is required"),
       password: (value) =>
         value.length >= 6 ? null : "Password must be at least 6 characters",
     },
   });
 
-  //MoveUser to Dashboard if their status is logged in
   useEffect(() => {
     if (currentUser) {
       navigate("/dashboard");
@@ -55,8 +49,6 @@ const Signup: React.FC = () => {
           const user = userCredential.user;
           setDoc(doc(db, "users", user.uid), {
             email: values.email,
-            username: values.username,
-            role: "coach",
           });
           navigate("/dashboard");
         })
@@ -83,12 +75,6 @@ const Signup: React.FC = () => {
               label="Email"
               placeholder="your@email.com"
               {...form.getInputProps("email")}
-            />
-            <TextInput
-              withAsterisk
-              label="Username"
-              placeholder="How clients find you."
-              {...form.getInputProps("username")}
             />
             <TextInput
               withAsterisk
