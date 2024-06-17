@@ -125,12 +125,12 @@ export default function MTable({ onSelectedRowsChange }: MTableProps) {
 
   return (
     <>
-      {/* <Container
+      <Container
         fluid
         h={50}
         style={{
           position: "fixed",
-          bottom: "20px",
+          top: "20px",
           right: "20px",
           zIndex: 1000,
         }}
@@ -138,7 +138,7 @@ export default function MTable({ onSelectedRowsChange }: MTableProps) {
         <Button onClick={fetchPosts} rightSection={<IconRefresh size={14} />}>
           Refresh
         </Button>
-      </Container> */}
+      </Container>
       <Table stickyHeader stickyHeaderOffset={60} horizontalSpacing="md">
         <Table.Thead>
           <Table.Tr>

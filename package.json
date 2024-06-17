@@ -61,6 +61,7 @@
   "devDependencies": {
     "@types/firebase": "^3.2.1",
     "@types/react-router-dom": "^5.3.3",
+    "@types/turndown": "^5.0.4",
     "postcss": "^8.4.35",
     "postcss-preset-mantine": "^1.13.0",
     "postcss-simple-vars": "^7.0.1"

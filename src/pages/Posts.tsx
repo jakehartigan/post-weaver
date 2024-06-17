@@ -5,6 +5,7 @@ import MTable from "../components/ui/table/MTable";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "../firebaseConfig";
 import { useAuth } from "../contexts/AuthContext";
+import TurndownService from "turndown";
 
 function Posts() {
   const { currentUser } = useAuth();
@@ -21,6 +22,8 @@ function Posts() {
     if (currentUser) {
       const db = getFirestore(app);
       let combinedContent = "";
+      let markdownContent = "";
+      const turndownService = new TurndownService();
 
       for (const rowIndex of selectedRows) {
         const docRef = doc(
@@ -32,7 +35,13 @@ function Posts() {
 
         if (docSnap.exists()) {
           console.log("Document data:", docSnap.data());
-          combinedContent += JSON.stringify(docSnap.data(), null, 2) + "\n";
+          const data = docSnap.data();
+          combinedContent += JSON.stringify(data, null, 2) + "\n";
+
+          // Convert HTML to Markdown
+          if (data.content) {
+            markdownContent += turndownService.turndown(data.content) + "\n";
+          }
         } else {
           console.log("No such document!");
         }
@@ -41,6 +50,15 @@ function Posts() {
       console.log("Combined Content:", combinedContent);
       setModalContent(combinedContent);
       setModalOpened(true);
+
+      // Trigger Markdown download
+      const mdBlob = new Blob([markdownContent], { type: "text/markdown" });
+      const mdLink = document.createElement("a");
+      mdLink.href = URL.createObjectURL(mdBlob);
+      mdLink.download = "posts.md";
+      document.body.appendChild(mdLink);
+      mdLink.click();
+      document.body.removeChild(mdLink);
     }
   };
 
