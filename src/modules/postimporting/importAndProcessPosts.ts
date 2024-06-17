@@ -29,10 +29,14 @@ const importAndProcessPosts = async (userId: string, newPosts: Tweet[]) => {
   //   // Categorize each post node by its type (e.g., retweet, comment, etc.)
   const categorizedPostNodes = assignTypesToPostNodes(postNodesWithHtmlContent);
 
-  // Filter post nodes to only include tweetThreads and long posts
-  const filteredRepostableNodes = categorizedPostNodes.filter((postNode) =>
-    ["long", "tweetThread"].includes(postNode.type)
-  );
+  // Filter post nodes to only include tweetThreads and long posts with minimum 500 words
+  const filteredRepostableNodes = categorizedPostNodes.filter((postNode) => {
+    const isRepostableType = ["long", "tweetThread"].includes(postNode.type);
+    const wordCount = postNode.posts
+      ? postNode.posts.reduce((total, post) => total + countWords(post.text), 0)
+      : 0;
+    return isRepostableType && wordCount >= 500;
+  });
 
   // Add the filtered posts to Firestore under the user's importedPosts directory
   for (const postNode of filteredRepostableNodes) {
@@ -422,6 +426,10 @@ const sortPostsByDate = (posts: Post[]): Post[] => {
     (a, b) =>
       new Date(a.publishedDate).getTime() - new Date(b.publishedDate).getTime()
   );
+};
+
+const countWords = (text: string): number => {
+  return text.split(/\s+/).filter((word) => word.length > 0).length;
 };
 
 export default importAndProcessPosts;
